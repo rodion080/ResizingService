@@ -21,6 +21,6 @@ echo "status:".$status;
 echo "<br>";
 
 //ссылка на скачку файла
-if($status!=404) {
+if($status==200) {
     echo "<a download='" . $imgName . "' href='img/" . $imgName . "'>download</a>";
 }

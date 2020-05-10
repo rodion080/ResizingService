@@ -1,5 +1,5 @@
 <?php
-namespace image_class;
+namespace classes;
 
 class SimpleImage {
 

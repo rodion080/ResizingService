@@ -32,6 +32,10 @@ function fileInit(e) {
 //ajax-запрос
 function saveImage(e) {
     e.preventDefault();
+
+    if(fileBox.length==0){
+        alert("First upload your file");
+    }
     let fd = new FormData();
     fd.append('imgToProcess', fileBox[0], fileBox[0].name);
     fd.append('imgWidth', widthInput.value);
@@ -43,15 +47,37 @@ function saveImage(e) {
         data:fd,
         contentType:false,
         processData: false,
+        error:function(jqXHR, exception, response){
+            uploadImage(fileBox[0].name,jqXHR.status)
+        },
         success:function (xhr, textStatus, response) {
-            let status = response.status;
             let data = JSON.parse(response.responseText);
-            let id = data.id;
-            let imgName=data.new_img_name;
-            let link = document.createElement('a');
-            link.innerHTML='download';
-            link.href='/download.php?id='+id+'&imgname='+imgName+'&status='+status;
-            document.getElementsByTagName('body')[0].appendChild(link);
+            let name = data.name;
+            let status = response.status;
+            uploadImage(name, status);
+        }
+    })
+}
+
+//второй ajax-запрос для загрузки данных в базу данных
+function uploadImage(name,status) {
+    let fd = new FormData();
+    fd.append('img_name', name);
+    fd.append('img_status', status);
+
+    $.ajax({
+        url:'./dbupload.php',
+        type:'POST',
+        data:fd,
+        contentType:false,
+        processData: false,
+        success:function (xhr, textStatus, response) {
+                let data = JSON.parse(response.responseText);
+                let id = data.id;
+                let link = document.createElement('a');
+                link.innerHTML = 'download';
+                link.href = '/download.php?id=' + id;
+                document.getElementsByTagName('body')[0].appendChild(link);
         }
     })
 }

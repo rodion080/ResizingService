@@ -1,6 +1,6 @@
 <?php
-require_once "image_class/SimpleImage.php";
-use image_class\SimpleImage;
+require_once "classes/SimpleImage.php";
+use classes\SimpleImage;
 
 session_start();
 if(!isset($_SESSION['id'])) {
@@ -29,9 +29,16 @@ $image->find($directory.'/'.$newImgName);
 $image->resize($newWidth, $newHeigth);
 $image->save($directory.'/'.$newImgName);
 
+//$dbImage = new DBImageModel();
+//$dbImage->setImageName($newImgName);
+//$dbImage->setStatus($newImgName);
+//$dbImage->save();
+//$id=$dbImaget->getId();
+
 //вывод данных на сторону клиента
 $result=[
-    'id'=>$id,
-    'new_img_name'=>$newImgName
+    'name'=>$newImgName
 ];
+
+
 echo json_encode($result);

@@ -1,11 +1,19 @@
 <?php
+require_once "classes/DBImageModel.php";
+use classes\DBImageModel;
+
 //получение данных из адресной строки
 $id = $_GET['id'];
-$imgName = $_GET['imgname'];
-$status = $_GET['status'];
+
+//получение данных из базы данных
+$dbModel = new DBImageModel();
+$dbModel->find($id);
+$imgName = $dbModel->getName();
+$status = $dbModel->getStatus();
 
 //отображение id
-echo "id".$id.":completed";
+$complOrFailed = ($status!=404)?"completed":"failed";
+echo 'id'.$id.':'.$complOrFailed;
 echo "<br>";
 
 //вывод статуса
@@ -13,4 +21,6 @@ echo "status:".$status;
 echo "<br>";
 
 //ссылка на скачку файла
-echo "<a download='9845eFRJ3RomlM2' href='img/".$_GET['imgname']."'>download</a>";
+if($status!=404) {
+    echo "<a download='" . $imgName . "' href='img/" . $imgName . "'>download</a>";
+}

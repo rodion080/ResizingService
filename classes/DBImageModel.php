@@ -1,7 +1,6 @@
 <?php
 namespace classes;
 require_once "classes/DB.php";
-use classes\DB;
 
 class DBImageModel {
 

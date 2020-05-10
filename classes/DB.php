@@ -8,7 +8,11 @@ class DB{
 
     public function __construct(){
         $dbConfig = require 'configs/db.php';
-        $this->pdo=new PDO('mysql:host='.$dbConfig['host'].';dbname='.$dbConfig['dbname'], ''.$dbConfig['user'], ''.$dbConfig['password']);
+        $this->pdo=new PDO('mysql:host='
+            .$dbConfig['host'].';dbname='
+            .$dbConfig['dbname'], ''
+            .$dbConfig['user'], ''
+            .$dbConfig['password']);
         if (!$this->pdo){
             die("Error connect to DataBase");
         }

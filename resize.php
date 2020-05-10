@@ -29,12 +29,6 @@ $image->find($directory.'/'.$newImgName);
 $image->resize($newWidth, $newHeigth);
 $image->save($directory.'/'.$newImgName);
 
-//$dbImage = new DBImageModel();
-//$dbImage->setImageName($newImgName);
-//$dbImage->setStatus($newImgName);
-//$dbImage->save();
-//$id=$dbImaget->getId();
-
 //вывод данных на сторону клиента
 $result=[
     'name'=>$newImgName

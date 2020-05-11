@@ -22,6 +22,9 @@ if(!is_dir($directory)){
 move_uploaded_file($imageFile['tmp_name'], $directory.'/'.$name);
 
 //используем класс "SimpleImage" для управления изображением
+//изменяем статус изображения в базе данных:
+//если формат не соответствует,то присваиваем статус ошибки
+//если соответствует-'complete'
 try {
     $image = new SimpleImage();
     $image->find($directory . '/' . $name);

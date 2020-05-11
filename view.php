@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<form action="/resize.php">
+<form id="img__form" action="/resize.php">
     <label id="img__input-label" for="img__input">Загрузите файл</label>
     <input id="img__input" type="file" accept="image/*" ><br>
     <label id="img__input-label" for="img__width">Ширина:</label>

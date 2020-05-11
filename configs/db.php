@@ -1,8 +1,8 @@
 <?php
 return[
     'host' => 'localhost',
-    'dbname'=>'mortaldb',
-    'user'=>'mvctest',
-    'password'=>'mvctest'
+    'dbname'=>'dbname',
+    'user'=>'user',
+    'password'=>'password'
 ];
 ?>

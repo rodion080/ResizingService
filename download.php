@@ -9,7 +9,7 @@ $id = $_GET['id'];
 $dbModel = new DBImageModel();
 $dbModel->find($id);
 $imgName = $dbModel->getName();
-$status = $dbModel->getStatus();
+$status = json_encode($dbModel->getStatus());
 
 //отображение id
 $complOrFailed = ($status!=404)?"completed":"failed";
@@ -21,6 +21,6 @@ echo "status:".$status;
 echo "<br>";
 
 //ссылка на скачку файла
-if($status==200) {
+if($dbModel->getStatus()==200) {
     echo "<a download='" . $imgName . "' href='img/" . $imgName . "'>download</a>";
 }

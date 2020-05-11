@@ -1,6 +1,6 @@
 <?php
-require_once "classes/DBImageModel.php";
-use classes\DBImageModel;
+require_once "models/DBImageModel.php";
+use models\DBImageModel;
 
 //получение данных из адресной строки
 $id = $_GET['id'];
@@ -9,18 +9,15 @@ $id = $_GET['id'];
 $dbModel = new DBImageModel();
 $dbModel->find($id);
 $imgName = $dbModel->getName();
-$status = json_encode($dbModel->getStatus());
+$status =$dbModel->getStatus();
 
-//отображение id
-$complOrFailed = ($status!=404)?"completed":"failed";
-echo 'id'.$id.':'.$complOrFailed;
-echo "<br>";
+$result = [
+    'id'=>$id,
+    'status'=>$status,
+    'name'=>$imgName
+];
 
-//вывод статуса
-echo "status:".$status;
-echo "<br>";
-
-//ссылка на скачку файла
-if($dbModel->getStatus()==200) {
-    echo "<a download='" . $imgName . "' href='img/" . $imgName . "'>download</a>";
+echo json_encode($result);
+if($dbModel->getStatus()=="complete") {
+    echo "<br><a download='" . $imgName . "' href='img/" . $imgName . "'>download</a>";
 }

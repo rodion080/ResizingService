@@ -1,38 +1,41 @@
 <?php
-require_once "classes/SimpleImage.php";
-use classes\SimpleImage;
+if ($_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {return;}
+require_once "models/SimpleImage.php";
+require_once "models/DBImageModel.php";
+use models\SimpleImage;
+use models\DBImageModel;
 
-session_start();
-if(!isset($_SESSION['id'])) {
-    $_SESSION['id']=0;
-}else{
-    $_SESSION['id']++;
-}
 //создаем параметры нового изображения
-$id=$_SESSION['id'];
+$id=$_POST['imgId'];
 $newWidth=intval($_POST['imgWidth']);
 $newHeigth=intval($_POST['imgHeight']);
 $imageFile=$_FILES['imgToProcess'];
-$newImgName=substr(strval(time()), 6,3).$imageFile['name'];
+$name=$imageFile['name'];
 $directory = "img";
 
 //создание новой директории по необходимости
 if(!is_dir($directory)){
     mkdir($directory);
 }
+
 //перемещение файла в директорию
-move_uploaded_file($imageFile['tmp_name'], $directory.'/'.$newImgName);
+move_uploaded_file($imageFile['tmp_name'], $directory.'/'.$name);
 
 //используем класс "SimpleImage" для управления изображением
-$image = new SimpleImage();
-$image->find($directory.'/'.$newImgName);
-$image->resize($newWidth, $newHeigth);
-$image->save($directory.'/'.$newImgName);
+try {
+    $image = new SimpleImage();
+    $image->find($directory . '/' . $name);
+    $image->resize($newWidth, $newHeigth);
+    $image->save($directory . '/' . $name);
 
-//вывод данных на сторону клиента
-$result=[
-    'name'=>$newImgName
-];
-
-
-echo json_encode($result);
+    $dbImage = new DBImageModel();
+    $dbImage->find($id);
+    $dbImage->setStatus('complete');
+    $dbImage->save();
+}catch (Exception $exc){
+    $dbImage = new DBImageModel();
+    $dbImage->find($id);
+    $dbImage->setStatus('error:'.$exc->getMessage());
+    $dbImage->save();
+    unlink($directory.'/'.$name);
+}

@@ -1,6 +1,7 @@
 <?php
-namespace classes;
-require_once "classes/DB.php";
+namespace models;
+require_once "libs/DB.php";
+use libs\DB;
 
 class DBImageModel {
 
@@ -28,18 +29,17 @@ class DBImageModel {
 
     public function save(){
         if($this->id==NULL) {
-            $this->db->row("INSERT INTO resized_images (img_status, img_name) VALUES (:img_status, :img_name)",
-                [
-                    'img_status' => $this->status,
-                    'img_name' => $this->name
-                ]
-            );
+            $query="INSERT INTO resized_images (img_status, img_name) VALUES (:img_status, :img_name)";
+            $params = ['img_status' => $this->status,'img_name' => $this->name];
+            $this->db->row($query,$params);
 
             $this->id=intval($this->db->row("SELECT img_id FROM resized_images WHERE img_name=:img_name", [
                 'img_name'=>$this->getName()
             ])[0]['img_id']);
         }else{
-            die("you need to extend class DBImageModel ");
+            $query="UPDATE resized_images SET img_status=:img_status, img_name=:img_name  WHERE img_id=:img_id";
+            $params = ['img_id'=>$this->getId(),'img_status'=>$this->getStatus(), 'img_name'=>$this->getName()];
+            $this->db->row($query, $params);
         }
 
     }

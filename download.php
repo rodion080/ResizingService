@@ -11,13 +11,13 @@ $dbModel->find($id);
 $imgName = $dbModel->getName();
 $status =$dbModel->getStatus();
 
-$result = [
+$response = [
     'id'=>$id,
     'status'=>$status,
     'name'=>$imgName
 ];
 
-echo json_encode($result);
+echo json_encode($response);
 if($dbModel->getStatus()=="complete") {
     echo "<br><a download='" . $imgName . "' href='img/" . $imgName . "'>download</a>";
 }

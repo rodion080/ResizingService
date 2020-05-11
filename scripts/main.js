@@ -67,7 +67,7 @@ function saveImage(e) {
         })
     }
 
-
+//второй запрос для изменения размера изображения(файла) и статуса выполнения(в базе данных)
 function resizeImage(id, name, width, height){
     let fd = new FormData();
     fd.append('imgToProcess', fileBox[0], name);
@@ -80,7 +80,7 @@ function resizeImage(id, name, width, height){
         type: 'POST',
         data: fd,
         contentType: false,
-        processData: false,
+        processData: false
     })
 
 } 

@@ -27,6 +27,8 @@ class DBImageModel {
         $this->status=$data[0]['img_status'];
     }
 
+    //если экземпляр класса создан без id, значит создаем новую таблицу
+    //если id присутствует - обновляем запись в таблице
     public function save(){
         if($this->id==NULL) {
             $query="INSERT INTO resized_images (img_status, img_name) VALUES (:img_status, :img_name)";
@@ -41,7 +43,6 @@ class DBImageModel {
             $params = ['img_id'=>$this->getId(),'img_status'=>$this->getStatus(), 'img_name'=>$this->getName()];
             $this->db->row($query, $params);
         }
-
     }
 
     public function getId(){

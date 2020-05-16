@@ -1,5 +1,6 @@
 <?php
 require_once "models/DBImageModel.php";
+require_once 'deb.php';
 use models\DBImageModel;
 
 //получение данных из адресной строки
@@ -11,13 +12,13 @@ $dbModel->find($id);
 $imgName = $dbModel->getName();
 $status =$dbModel->getStatus();
 
+$link = $_SERVER['HTTP_HOST'].'/img/'.$imgName;
+
 $response = [
     'id'=>$id,
     'status'=>$status,
-    'name'=>$imgName
+    'name'=>$imgName,
+    'link'=>$link
 ];
 
 echo json_encode($response);
-if($dbModel->getStatus()=="complete") {
-    echo "<br><a download='" . $imgName . "' href='img/" . $imgName . "'>download</a>";
-}
